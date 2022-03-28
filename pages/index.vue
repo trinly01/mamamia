@@ -1,9 +1,10 @@
 <template>
   <div>
-    <v-text-field @keyup.enter="send" v-model="input" placeholder="message" />
+    <v-text-field v-model="input" placeholder="message" @keyup.enter="send" />
     <v-btn @click="send">
       send
     </v-btn>
+    {{ messages }}
     <ul>
       <li v-for="m in messages" :key="m.id">
         {{ m.msg }}
@@ -14,6 +15,7 @@
 
 <script>
 import { onSnapshot } from 'firebase/firestore'
+// import { httpsCallable } from 'firebase/functions'
 
 export default {
   name: 'MamaMia',
@@ -39,15 +41,20 @@ export default {
     if (this.unsub) { this.unsub() }
   },
   methods: {
-    send () {
+    async send () {
       if (!this.input) { return }
-      this.$fire.firestore.collection('messages').add({
+      await this.$fire.firestore.collection('messages').add({
         msg: this.input
       })
+      // const functions = this.$fireModule.functions()
+      // const send = httpsCallable(functions, 'send')
+      // window.console.log(await send({
+      //   msg: this.input
+      // }))
       this.input = ''
-      this.$axios.$post('http://localhost:5001/mamamia-87e6a/us-central1/send', {
-        msg: this.input
-      })
+      // this.$axios.$post('http://localhost:5001/mamamia-87e6a/us-central1/send', {
+      //   msg: this.input
+      // })
     }
   }
 }

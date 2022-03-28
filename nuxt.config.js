@@ -61,6 +61,11 @@ export default {
             enablePersistence: true,
             emulatorPort: 8080,
             emulatorHost: 'localhost'
+          },
+          functions: {
+            location: 'us-central1',
+            emulatorPort: 5001,
+            emulatorHost: 'http://localhost',
           }
         }
       }
