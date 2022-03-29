@@ -43,18 +43,18 @@ export default {
   methods: {
     async send () {
       if (!this.input) { return }
-      await this.$fire.firestore.collection('messages').add({
-        msg: this.input
-      })
+      // await this.$fire.firestore.collection('messages').add({
+      //   msg: this.input
+      // })
       // const functions = this.$fireModule.functions()
       // const send = httpsCallable(functions, 'send')
       // window.console.log(await send({
       //   msg: this.input
       // }))
+      await this.$axios.$post('http://localhost:5001/mamamia-87e6a/us-central1/send', {
+        msg: this.input
+      })
       this.input = ''
-      // this.$axios.$post('http://localhost:5001/mamamia-87e6a/us-central1/send', {
-      //   msg: this.input
-      // })
     }
   }
 }

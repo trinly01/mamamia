@@ -7,19 +7,21 @@ admin.initializeApp();
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports = {
-  helloWorld: functions.https.onRequest((request, response) => {
-    functions.logger.info("Hello logs!", {structuredData: true});
-    response.send("Hello from Firebase!");
-  }),
-  send: functions.https.onRequest((request, response) => {
-    cors(request, response, () => {
-      functions.logger.info(request, {structuredData: true});
-      response.send("Hello from Firebase!", request);
+exports.helloWorld = functions.https.onRequest((request, response) => {
+  functions.logger.info("Hello logs!", {structuredData: true});
+  response.send("Hello from Firebase!");
+});
 
-      admin.firestore().collection("messages").add(request.body).then(() => {
-        functions.logger.info("Hello logs!", {structuredData: true});
-      });
+exports.send = functions.https.onRequest(async (request, response) => {
+  cors(request, response, () => {
+    functions.logger.info(request, {structuredData: true});
+    // response.send("Hello from Firebase!", request);
+
+    admin.firestore().collection("messages").add(request.body).then(() => {
+      functions.logger.info("Hello logs!", {structuredData: true});
+      response.send(request.body)
+    }).catch((error) => {
+      throw error
     });
-  }),
-};
+  });
+});
